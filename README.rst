@@ -36,6 +36,7 @@ Using the API
 Tests
 -----------------
 Test cases for the mqtt system can be found in the `tests folder`_
+
 .. _`tests folder`: https://github.com/JetNoLi/easymqtt/tree/master/tests
 
 Credits
