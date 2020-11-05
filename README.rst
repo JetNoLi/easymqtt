@@ -20,7 +20,8 @@ Used To easily Integrate ESP8266 into projects using MQTT
 
 
 * Free software: MIT license
-* Documentation: https://easymqtt.readthedocs.io.
+* Documentation: https://easymqtt.readthedocs.io/en/master
+
 
 
 Features
