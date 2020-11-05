@@ -42,3 +42,24 @@ Device Code Acknowledgements
 * `umqtt simple`_
 .. _`umqtt simple`: https://pypi.org/project/micropython-umqtt.simple/
 
+Web Server and Broker Acknowledgements
+------------
+* hbmqtt_
+.. _hbmqtt: https://pypi.org/project/hbmqtt/
+* mongotriggers_
+.. _mongotriggers: https://pypi.org/project/mongotriggers/
+* pymongo_
+.. _pymongo: https://pypi.org/project/pymongo/
+* paho-mqtt_
+.. _paho-mqtt: https://pypi.org/project/paho-mqtt/
+* pyngrok_
+.. _pyngrok: https://pypi.org/project/pyngrok/
+* netifaces_
+.. _netifaces: https://pypi.org/project/netifaces/
+* flask_
+.. _flask: https://flask.palletsprojects.com/en/1.1.x/
+* `flask_pymongo`_
+.. _`flask_pymongo`: https://pypi.org/project/Flask-PyMongo/
+
+
+
