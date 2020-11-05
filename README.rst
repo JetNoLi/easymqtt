@@ -33,6 +33,11 @@ Using the API
 * Usage Instructions for `device setup`_ can be found here
 .. _`device setup`: https://github.com/JetNoLi/easymqtt/tree/master/easymqtt/deviceSetup
 
+Tests
+-----------------
+Test cases for the mqtt system can be found here_
+.. _here: https://github.com/JetNoLi/easymqtt/tree/master/tests
+
 Credits
 -------
 
