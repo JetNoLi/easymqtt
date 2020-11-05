@@ -24,10 +24,14 @@ Used To easily Integrate ESP8266 into projects using MQTT
 
 
 
-Features
+Using the API
 --------
 
-* TODO
+* Usage instructions for the web server and broker can be found here_
+.. _here: https://github.com/JetNoLi/easymqtt/tree/master/easymqtt/db_and_broker
+
+* Usage Instructions for device setup can be found here_
+.. _here: https://github.com/JetNoLi/easymqtt/tree/master/easymqtt/deviceSetup
 
 Credits
 -------
