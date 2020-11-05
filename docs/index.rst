@@ -7,7 +7,6 @@ Welcome to EasyMQTT's documentation!
 
    readme
    installation
-   usage
    modules
    contributing
    authors
