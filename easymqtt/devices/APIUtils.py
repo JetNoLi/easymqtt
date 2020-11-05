@@ -1,11 +1,11 @@
 #import test
-import network
-import functions
-from machine import Pin
-from machine import SPI
-from machine import Timer
-from machine import ADC
-import config
+# import network
+# import functions
+# from machine import Pin
+# from machine import SPI
+# from machine import Timer
+# from machine import ADC
+# import config
 
 
 def connectToWifi(ssid, psk):

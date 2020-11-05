@@ -1,7 +1,7 @@
-from machine import Pin
-from machine import Timer
-from machine import SPI
-import APIUtils as Utils
+# from machine import Pin
+# from machine import Timer
+# from machine import SPI
+# import APIUtils as Utils
 
 #Note all functions will be called from main, i.e will be able to input the function in the
 #callback thus no need to map to a function

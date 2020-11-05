@@ -8,32 +8,48 @@ import os
 ##Initialisations
 # =============================
 app = Flask(__name__)
+global switchCol
+global sensorCol
+global histCol
+global deviceCol
+global archiveCol
+global liveBrokerCol 
 
-uri = ""
-dbName = ""
+def init():
+  """
+  Function  to run the initialisation of the web server
+  """
+  global switchCol
+  global sensorCol
+  global histCol
+  global deviceCol
+  global archiveCol
+  global liveBrokerCol 
+  uri = ""
+  dbName = ""
 
-#check for creds
-if os.path.getsize("dbCreds.py") > 0:
-        dbName = dbCreds.dbName
-        uri = dbCreds.uri
-else:
-    with open ("dbCreds.py", 'r+') as f:
-        dbName = input("Enter a name for your database: ")
-        uri = input("Please enter the connection URI for your databse: ")
-        dbNameWrite = "dbName = \"" + dbName + "\"\n"
-        uriWrite = "uri = \"" + uri +"\""
-        print(uri)
-        lines = [dbNameWrite, uriWrite]
-        f.writelines(lines)
+  #check for creds
+  if os.path.getsize("dbCreds.py") > 0:
+          dbName = dbCreds.dbName
+          uri = dbCreds.uri
+  else:
+      with open ("dbCreds.py", 'r+') as f:
+          dbName = input("Enter a name for your database: ")
+          uri = input("Please enter the connection URI for your databse: ")
+          dbNameWrite = "dbName = \"" + dbName + "\"\n"
+          uriWrite = "uri = \"" + uri +"\""
+          print(uri)
+          lines = [dbNameWrite, uriWrite]
+          f.writelines(lines)
 
-# init db
-client = pyMongoSetUp.connectDB(uri)
-switchCol, sensorCol, histCol, deviceCol, archiveCol, liveBrokerCol = pyMongoSetUp.initDefault(client, dbName)
+  # init db
+  client = pyMongoSetUp.connectDB(uri)
+  switchCol, sensorCol, histCol, deviceCol, archiveCol, liveBrokerCol = pyMongoSetUp.initDefault(client, dbName)
 
-# configure flask app
-app.config["MONGO_DBNAME"] = dbName
-app.config["MONGO_URI"] = uri
-mongo = PyMongo(app)
+  # configure flask app
+  app.config["MONGO_DBNAME"] = dbName
+  app.config["MONGO_URI"] = uri
+  mongo = PyMongo(app)
 
 
 ## ROUTES TO GET ALL  DEVICES
@@ -48,6 +64,8 @@ def getSwitches():
     :return: An array of JSON Objects(dictionaries) where each object represents a specific switch
     :rtype: List of dictionaries
     """
+    global switchCol
+
     result = []
     for q in switchCol.find():
         result.append({'DeviceName': q['DeviceName'], 'Status': q['Status'], 'PinNumber': q['PinNumber'],
@@ -65,6 +83,7 @@ def getSensors():
     :return:  An array of JSON Objects(dictionaries) where each object represents a specific sensor
     :rtype: List of Dictionaries
     """
+    global sensorCol
     result = []
     for q in sensorCol.find():
         result.append(
@@ -83,6 +102,12 @@ def getHistory():
         :return:  An array of JSON Objects(dictionaries) where each object represents a specific history record
         :rtype: List of Dictionaries
         """
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol 
     result = []
     for q in histCol.find():
         #check to see if there is a lastrecordedValue
@@ -102,6 +127,12 @@ def getDevices():
         :return:  An array of JSON Objects(dictionaries) where each object represents a specific device
         :rtype: List of Dictionaries
         """
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol         
     result = []
     for q in deviceCol.find():
         result.append({'DeviceName':q['DeviceName'],'CreatedAt':q['CreatedAt']})
@@ -125,6 +156,13 @@ def getSwitch(deviceName, pinNum):
         :return:  A JSON object (Dictionary) representing a specific switch, or None
         :rtype: Dictionary containing the data for that particilar switch or None
         """
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol     
+
     q = switchCol.find_one({"DeviceName": deviceName, "PinNumber": pinNum})
     result = {'DeviceName': q['DeviceName'], 'Status': q['Status'], 'PinNumber': q['PinNumber'],
               "CommandIssued": q['CommandIssued'], "LastModified": q['LastModified']}
@@ -147,6 +185,12 @@ def getSensor(deviceName, pinNum):
           :return:  A JSON object (Dictionary) representing a specific sensor, or None
           :rtype: Dictionary containing the data for that particilar sensor or None
           """
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol           
     q = sensorCol.find_one({"DeviceName": deviceName, "PinNumber": pinNum})
     result = {'DeviceName': q['DeviceName'], 'LastRecordedValue': q['LastRecordedValue'], 'PinNumber': q['PinNumber'],
               "CommandIssued": q['CommandIssued'], "LastModified": q['LastModified']}
@@ -169,7 +213,12 @@ def getDeviceHistory(deviceName, pinNum):
           :return:  An array of JSON objects (Dictionary) representing the history of the sensor or switch , or None
           :rtype: An array of dictionaries containing the entire history for a particular sensor or switch
           """
-
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol 
     result = []
     for q in histCol.find({"DeviceName": deviceName, "PinNumber": pinNum}):
         result.append({'DeviceName': q['DeviceName'], 'PinNumber': q['PinNumber'], "CommandIssued": q['CommandIssued'],
@@ -191,7 +240,12 @@ def registerDevice():
     :return: A JSON object containing either the data of the newly created device or and Error Message in the event the database could not be reached or a device with that name already exists
     :rtype: A single JSON dictionary as the response body or an error mssage 
     """
-
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol 
     deviceName = request.json["DeviceName"]
     modified = datetime.utcnow()
 
@@ -221,6 +275,12 @@ def addSwitch():
         :return: A JSON object containing either the data of the newly created switch or and Error Message indicating what went wrong during registration
         :rtype: A single JSON dictionary as the response body or an error mssage 
         """
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol         
     deviceName = request.json['DeviceName']
     status = request.json['Status']
     pinNum = request.json["PinNumber"]
@@ -265,6 +325,12 @@ def addSensor():
         :return: A JSON object containing either the data of the newly created sensor or and Error Message indicating what went wrong during registration
         :rtype: A single JSON dictionary as the response body or an error mssage 
         """
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol     
     deviceName = request.json['DeviceName']
     lastVal = request.json['LastRecordedValue']
     pinNum = request.json["PinNumber"]
@@ -322,6 +388,13 @@ def updateSwitch(deviceName, pinNum):
           :return: A JSON object containing either the data of the newly updated switch or and Error Message indicating what went wrong during registration
           :rtype: A single JSON dictionary as the response body or an error message 
           """
+    
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol 
     status = request.json['Status']
     command = request.json["CommandIssued"]
     modified = datetime.utcnow()
@@ -370,6 +443,12 @@ def updateSensor(deviceName, pinNum):
            :return: A JSON object containing either the data of the newly updated sensor or and Error Message indicating what went wrong during registration
            :rtype: A single JSON dictionary as the response body or an error message 
            """
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol 
     lastVal = request.json['LastRecordedValue']
     command = request.json["CommandIssued"]
     modified = datetime.utcnow()
@@ -420,6 +499,12 @@ def deleteSwitch(deviceName, pinNumber):
           :return: A JSON object containing a success or error message depending on what happened durind deletion
           :rtype: JSON object with a single string
           """
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol 
     pinNumber = int(pinNumber)
     q = {'DeviceName': deviceName, 'PinNumber': pinNumber}
     IO = 'O'
@@ -459,6 +544,12 @@ def deleteSensor(deviceName, pinNumber):
           :return: A JSON object containing a success or error message depending on what happened durind deletion
           :rtype: JSON object with a single string
           """
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol 
     pinNumber = int(pinNumber)
     q = {'DeviceName': deviceName, 'PinNumber': pinNumber}
     IO = 'I'
@@ -488,6 +579,12 @@ def deleteSensor(deviceName, pinNumber):
 # route to swap from sensor to switch
 @app.route('/sensors/toSwitch/<deviceName>/<pinNumber>', methods=['DELETE'])
 def sensorToSwitch(deviceName, pinNumber):
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol   
     pinNumber = int(pinNumber)
     q = {'DeviceName': deviceName, 'PinNumber': pinNumber}
     """
@@ -502,6 +599,8 @@ def sensorToSwitch(deviceName, pinNumber):
           :return: A JSON object containing either the data of the newly updated switch or and Error Message indicating what went wrong during registration
           :rtype: JSON object with a single string
           """
+
+
     modified = datetime.utcnow()
 
     try:
@@ -540,6 +639,12 @@ def switchToSensor(deviceName, pinNumber):
           :return: A JSON object containing either the data of the newly updated switch or and Error Message indicating what went wrong during registration
           :rtype: JSON object with a single string
           """
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol 
     pinNumber = int(pinNumber)
     q = {'DeviceName': deviceName, 'PinNumber': pinNumber}
 
@@ -581,6 +686,12 @@ def deleteDevice(deviceName):
     :return: A JSON object with either a success or error message
     :rtype: JSON object containing a single string
     """
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol 
     try:
         q = {"DeviceName": deviceName}
         deviceCol.delete_one(q)
@@ -600,6 +711,12 @@ def brokerUpdateUrl():
     :return: A JSON object indicating transaction status
     :rtype: JSON object containing a string
     """
+    global switchCol
+    global sensorCol
+    global histCol
+    global deviceCol
+    global archiveCol
+    global liveBrokerCol 
     url = request.json["URL"]
     broker = request.json["Broker"]
     modified = datetime.utcnow()
@@ -621,5 +738,6 @@ def brokerUpdateUrl():
 
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     init()
+#     app.run(debug=True)

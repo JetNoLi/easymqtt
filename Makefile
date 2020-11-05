@@ -64,7 +64,6 @@ coverage: ## check code coverage quickly with the default Python
 
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/easymqtt.rst
-	rm -f docs/modules.rst
 	sphinx-apidoc -o docs/ easymqtt
 	sphinx-apidoc -o docs/ easymqtt/devices/
 	sphinx-apidoc -o docs/ easymqtt/db_and_broker/

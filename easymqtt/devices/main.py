@@ -1,13 +1,13 @@
 #import test
-import ubinascii
-from machine import Pin
-from machine import ADC
-import machine
+# import ubinascii
+# from machine import Pin
+# from machine import ADC
+# import machine
 import APIUtils as Utils
-import time
+# import time
 import config
-import functions
-from simple2 import MQTTClient
+# import functions
+# from simple2 import MQTTClient
 
 #stores client to allow to publish from subscriber callbacks
 global client
@@ -213,33 +213,34 @@ def getCallbackFunctions():
 
 
 # Try to connect to Wifi - LED turns on and off
-Utils.connectToWifi(config.ssid,config.psk)
+#Utils.connectToWifi(config.ssid,config.psk)
 
 # Config to connect to broker and handle API implementation
-broker = config.brokerIP
-CLIENT_ID = ubinascii.hexlify(machine.unique_id())
+#broker = config.brokerIP
+broker = ""
+#CLIENT_ID = ubinascii.hexlify(machine.unique_id())
 
 client = None
 
 #to match topic to API call
-topics = Utils.getTopics(config.deviceName)             #generates list of topics for given device     
-topicDict = Utils.getTopicDict(config.deviceName)       #dictionary mapping topics to API functions
+#topics = Utils.getTopics(config.deviceName)             #generates list of topics for given device     
+#topicDict = Utils.getTopicDict(config.deviceName)       #dictionary mapping topics to API functions
 callbackMap = getCallbackFunctions()
 
 #to store pin instances and then a list of their states, also attaches a timer if one was created
-pins, IOlist, timerValue, SPISetup = Utils.getPinList()           #reads from the pin.txt file and reloads last state for each pin
+#pins, IOlist, timerValue, SPISetup = Utils.getPinList()           #reads from the pin.txt file and reloads last state for each pin
 
 timer = None
 timerFunction = False       #stores the CB method for timer
 
 
 #timerValue in the form functionName for CB, pinNum
-if timerValue is not None:
-    #must still map callback to pin and init pin
-    #print(pins)
-    timer, pinNum, func = functions.timedInterrupt(timerValue[1], timerValue[0], timerValue[2], timerCB)
-    pins[config.pinCount] = int(pinNum)
-    timerFunction = callbackMap[func]
+# if timerValue is not None:
+#     #must still map callback to pin and init pin
+#     #print(pins)
+#     timer, pinNum, func = functions.timedInterrupt(timerValue[1], timerValue[0], timerValue[2], timerCB)
+#     pins[config.pinCount] = int(pinNum)
+#     timerFunction = callbackMap[func]
 
 
 #THIS IS WHAT HAPPENS WHEN STATE CHANGES CHANGE HERE TO IMPLEMENT FUNCTIONALITY
@@ -406,6 +407,6 @@ def main(server=broker):
         client.disconnect()
 
 
-if __name__ == "__main__":
-	main()
+# if __name__ == "__main__":
+# 	main()
 

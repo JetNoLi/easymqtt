@@ -1,3 +1,6 @@
+"""
+Module To store the database schema
+"""
 # This is the schema for the History Collection
 histColSchema = {
 

@@ -23,8 +23,8 @@ global db
 topics = []             #stores the topics which have already been added to db i.e. need to update not add 
 topicsHeard = ""        #stores the topic of the most recently heard function
 url = ""                #url for the ngrok tunnel
-ip =  ni.ifaddresses('wlan0')[ni.AF_INET][0]['addr']
-
+#ip =  ni.ifaddresses('wlan0')[ni.AF_INET][0]['addr'] #uncomment this line
+ip = ""
 
 
 #subscriber callback for clientPublish, that listens on
@@ -215,19 +215,19 @@ def brokerGetMess():
     
 
 
-if __name__ == '__main__':
-    global clientPublisher
-    formatter = "[%(asctime)s] :: %(levelname)s :: %(name)s :: %(message)s"
-    logging.basicConfig(level=logging.INFO, format=formatter)
+# if __name__ == '__main__':
+#     global clientPublisher
+#     formatter = "[%(asctime)s] :: %(levelname)s :: %(name)s :: %(message)s"
+#     logging.basicConfig(level=logging.INFO, format=formatter)
     
-    print("Initialising database listener")
-    init()
-    print("Initialised")
-    print("Starting the watch thread")
-    thread = threading.Thread(target=watchThreaded)
-    thread.start()
-    print("Watch thread started")
+#     print("Initialising database listener")
+#     init()
+#     print("Initialised")
+#     print("Starting the watch thread")
+#     thread = threading.Thread(target=watchThreaded)
+#     thread.start()
+#     print("Watch thread started")
 
-    asyncio.get_event_loop().run_until_complete(broker_coro())
-    asyncio.get_event_loop().run_until_complete(brokerGetMess())
-    asyncio.get_event_loop().run_forever()
+#     asyncio.get_event_loop().run_until_complete(broker_coro())
+#     asyncio.get_event_loop().run_until_complete(brokerGetMess())
+#     asyncio.get_event_loop().run_forever()
